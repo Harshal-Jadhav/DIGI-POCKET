@@ -37,5 +37,13 @@ public class GlobalExceptionHandler {
 		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
+	
+	
+	//Exception handler for Beneficiary service.
+	@ExceptionHandler(BeneficiaryNotFoundException.class)
+	public ResponseEntity<ErrorDetails> beneficiaryExceptionHandler(BeneficiaryNotFoundException e,WebRequest wr){
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
 
 }
