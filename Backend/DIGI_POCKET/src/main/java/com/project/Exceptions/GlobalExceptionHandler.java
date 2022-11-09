@@ -15,6 +15,18 @@ public class GlobalExceptionHandler {
 
 	// Add Your Exceptions Here:------------->
 
+	@ExceptionHandler(CustomerException.class)
+	public ResponseEntity<ErrorDetails> customerException(CustomerException e, WebRequest wr) {
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(BeneficiaryNotFoundException.class)
+	public ResponseEntity<ErrorDetails> beneficiaryNotFoundException(BeneficiaryNotFoundException e, WebRequest wr) {
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
+
 	// End of User Defined Exceptions:------->
 
 	// Default Exceptions Listed Below:----->
