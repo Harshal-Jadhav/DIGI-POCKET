@@ -56,7 +56,5 @@ public class Customer {
 	public void setWallet(Wallet wallet) {
 		this.wallet = wallet;
 	}
-	
-	
-	
+
 }
