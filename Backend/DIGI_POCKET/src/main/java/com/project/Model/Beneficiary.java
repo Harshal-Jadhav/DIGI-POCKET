@@ -9,14 +9,24 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Beneficiary {
 
+	@NotNull(message = "name should not be null")
+	@NotEmpty(message = "name cannot be null")
+	@Size(min = 3, max = 25, message = "name length should be between 3 to 25")
 	private String name;
+
 	@Id
+	@NotNull(message = "mobile no. should not be null")
+	@NotEmpty(message = "mobile no. should not be empty")
+	@Size(min = 10, max = 12)
 	private String mobile;
 
 	// Entity Relationships
