@@ -1,9 +1,9 @@
 package com.project.Model;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,16 +32,16 @@ public class Wallet {
 	private Customer customer;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
-	private Set<BankAccount> bankAccounts = new LinkedHashSet<>();
+	private List<BankAccount> bankAccounts = new ArrayList<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
-	private Set<Transaction> transactions = new LinkedHashSet<>();
+	private List<Transaction> transactions = new ArrayList<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")
-	private Set<BillPayment> billPayments = new LinkedHashSet<>();
+	private List<BillPayment> billPayments = new ArrayList<>();
 
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "walletList")
-	private Set<Beneficiary> beneficiaryList = new LinkedHashSet<>();
+	private List<Beneficiary> beneficiaryList = new ArrayList<>();
 
 	public Wallet() {
 		// TODO Auto-generated constructor stub
@@ -75,35 +75,35 @@ public class Wallet {
 		this.customer = customer;
 	}
 
-	public Set<BankAccount> getBankAccounts() {
+	public List<BankAccount> getBankAccounts() {
 		return bankAccounts;
 	}
 
-	public void setBankAccounts(Set<BankAccount> bankAccounts) {
+	public void setBankAccounts(List<BankAccount> bankAccounts) {
 		this.bankAccounts = bankAccounts;
 	}
 
-	public Set<Transaction> getTransactions() {
+	public List<Transaction> getTransactions() {
 		return transactions;
 	}
 
-	public void setTransactions(Set<Transaction> transactions) {
+	public void setTransactions(List<Transaction> transactions) {
 		this.transactions = transactions;
 	}
 
-	public Set<BillPayment> getBillPayments() {
+	public List<BillPayment> getBillPayments() {
 		return billPayments;
 	}
 
-	public void setBillPayments(Set<BillPayment> billPayments) {
+	public void setBillPayments(List<BillPayment> billPayments) {
 		this.billPayments = billPayments;
 	}
 
-	public Set<Beneficiary> getBeneficiaryList() {
+	public List<Beneficiary> getBeneficiaryList() {
 		return beneficiaryList;
 	}
 
-	public void setBeneficiaryList(Set<Beneficiary> beneficiaryList) {
+	public void setBeneficiaryList(List<Beneficiary> beneficiaryList) {
 		this.beneficiaryList = beneficiaryList;
 	}
 

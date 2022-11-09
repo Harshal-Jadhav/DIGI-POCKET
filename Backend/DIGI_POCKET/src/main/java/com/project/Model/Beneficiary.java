@@ -1,8 +1,7 @@
 package com.project.Model;
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -33,7 +32,7 @@ public class Beneficiary {
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "walletId")
-	private Set<Wallet> walletList = new LinkedHashSet<>();
+	private List<Wallet> walletList = new ArrayList<>();
 
 	public Beneficiary() {
 		// TODO Auto-generated constructor stub
@@ -60,11 +59,11 @@ public class Beneficiary {
 		this.mobile = mobile;
 	}
 
-	public Set<Wallet> getWalletList() {
+	public List<Wallet> getWalletList() {
 		return walletList;
 	}
 
-	public void setWalletList(Set<Wallet> walletList) {
+	public void setWalletList(List<Wallet> walletList) {
 		this.walletList = walletList;
 	}
 
