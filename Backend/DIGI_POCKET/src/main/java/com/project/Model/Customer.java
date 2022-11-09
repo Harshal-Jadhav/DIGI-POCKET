@@ -1,7 +1,10 @@
 package com.project.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Customer {
@@ -12,6 +15,8 @@ public class Customer {
 	private String password;
 
 	// Entity Relationships
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "walletId")
 	private Wallet wallet;
 	
 	public Customer() {
