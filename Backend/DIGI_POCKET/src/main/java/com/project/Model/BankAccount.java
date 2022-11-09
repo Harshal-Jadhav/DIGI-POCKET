@@ -7,14 +7,26 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class BankAccount {
 
 	@Id
 	private Integer accountNo;
+	
+	@NotNull(message = "IFSC Code cannot be Null.")
+	@NotEmpty(message = "IFSC Code cannot be Empty.")
 	private String ifscCode;
+
+	@NotNull(message = "Bank Name cannot be Null.")
+	@NotEmpty(message = "Bank Name cannot be Empty.")
 	private String bankName;
+	
+	@NotNull(message = "Balance cannot be null")
+	@Min(0)
 	private BigDecimal balance;
 
 	// Entity Relationships

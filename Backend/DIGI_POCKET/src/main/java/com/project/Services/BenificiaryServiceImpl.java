@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.project.Exceptions.BeneficiaryNotFoundException;
 import com.project.Model.Beneficiary;
 import com.project.Model.Customer;
 import com.project.Repositories.BeneficiaryRepo;
 
+@Service
 public class BenificiaryServiceImpl implements BenificiaryService {
 
 	@Autowired

@@ -26,7 +26,7 @@ public class Beneficiary {
 	@Id
 	@NotNull(message = "mobile no. should not be null")
 	@NotEmpty(message = "mobile no. should not be empty")
-	@Size(min = 10, max = 12)
+	@Size(max = 10)
 	private String mobile;
 
 	// Entity Relationships

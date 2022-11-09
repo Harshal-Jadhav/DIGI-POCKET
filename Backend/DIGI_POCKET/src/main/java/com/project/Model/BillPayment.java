@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class BillPayment {
@@ -16,8 +19,15 @@ public class BillPayment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer billId;
+
+	@NotNull(message = "Bill Type cannot be Null.")
+	@NotEmpty(message = "Bill Type cannot be Empty.")
 	private String billType;
+
+	@NotNull(message = "Amount cannot be null")
+	@Min(1)
 	private double amount;
+	
 	private LocalDate paymentDate;
 	
 	// Entity Relationships;

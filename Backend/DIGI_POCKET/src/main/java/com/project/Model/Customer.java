@@ -5,13 +5,25 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Customer {
 
 	@Id
+	@NotNull(message = "Mobile no cannot be Null.")
+	@NotEmpty(message = "Mobile no cannot be Empty.")
+	@Max(10)
 	private String mobile;
+
+	@NotNull(message = "Customer name cannot be Null.")
+	@NotEmpty(message = "Customer name cannot be Empty.")
 	private String name;
+	
+	@NotNull(message = "passwod cannot be Null.")
+	@NotEmpty(message = "password cannot be Empty.")
 	private String password;
 
 	// Entity Relationships
