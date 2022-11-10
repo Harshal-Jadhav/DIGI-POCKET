@@ -26,6 +26,12 @@ public class GlobalExceptionHandler {
 		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(WalletException.class)
+	public ResponseEntity<ErrorDetails> walletException(WalletException we, WebRequest wr) {
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), we.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
 
 	// End of User Defined Exceptions:------->
 
