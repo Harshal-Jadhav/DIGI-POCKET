@@ -27,6 +27,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<ErrorDetails> InvalidCredentialsException(InvalidCredentialsException e , WebRequest wr){
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
+
 	// End of User Defined Exceptions:------->
 
 	// Default Exceptions Listed Below:----->
