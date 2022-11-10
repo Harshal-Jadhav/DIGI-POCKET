@@ -8,12 +8,10 @@ import com.project.Model.Wallet;
 
 public interface AccountService {
 	
-	public Wallet addAccount(BankAccount account);
+	public Wallet addAccount(BankAccount account, Integer walletId);
 	
-	public Wallet removeAccount(Integer accountNo) throws BankAccountException;
+	public Wallet removeAccount(Integer accountNo, Integer walletId) throws BankAccountException;
 	
-	public BankAccount viewAccount(Wallet wallet);
-	
-	public List<BankAccount> viewAccounts(Wallet wallet);
+	public List<BankAccount> viewAccounts(Integer walletId) throws BankAccountException;
 
 }
