@@ -27,16 +27,27 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
 	
+
 	@ExceptionHandler(WalletException.class)
 	public ResponseEntity<ErrorDetails> walletException(WalletException we, WebRequest wr) {
 		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), we.getMessage(), wr.getDescription(false));
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
-
+	
+	// BankAccount Exception added by Suresh
+	
+	@ExceptionHandler(BankAccountException.class)
+	public ResponseEntity<ErrorDetails> accountNotFoundException(BankAccountException e, WebRequest wr) {
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
+	
 	// End of User Defined Exceptions:------->
+	
+	
 
 	// Default Exceptions Listed Below:----->
-
+	
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ResponseEntity<ErrorDetails> NoHandlerFoundException(NoHandlerFoundException e, WebRequest wr) {
 		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
