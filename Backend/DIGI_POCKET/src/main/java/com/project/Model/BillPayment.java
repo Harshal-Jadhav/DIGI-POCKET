@@ -1,6 +1,6 @@
 package com.project.Model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class BillPayment {
@@ -28,18 +31,21 @@ public class BillPayment {
 	@Min(1)
 	private double amount;
 	
-	private LocalDate paymentDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@NotNull
+	private Date paymentDate;
 	
 	// Entity Relationships;
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "walletId")
+	@JsonIgnore
 	private Wallet wallet;
 
 	public BillPayment() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BillPayment(Integer billId, String billType, double amount, LocalDate paymentDate) {
+	public BillPayment(Integer billId, String billType, double amount, Date paymentDate) {
 		this.billId = billId;
 		this.billType = billType;
 		this.amount = amount;
@@ -70,11 +76,11 @@ public class BillPayment {
 		this.amount = amount;
 	}
 
-	public LocalDate getPaymentDate() {
+	public Date getPaymentDate() {
 		return paymentDate;
 	}
 
-	public void setPaymentDate(LocalDate paymentDate) {
+	public void setPaymentDate(Date paymentDate) {
 		this.paymentDate = paymentDate;
 	}
 
