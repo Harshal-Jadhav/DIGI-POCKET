@@ -27,6 +27,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
 	
+
+	@ExceptionHandler(WalletException.class)
+	public ResponseEntity<ErrorDetails> walletException(WalletException we, WebRequest wr) {
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), we.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
 	
 	// BankAccount Exception added by Suresh
 	
