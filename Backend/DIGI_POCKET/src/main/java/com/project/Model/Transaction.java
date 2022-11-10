@@ -1,6 +1,6 @@
 package com.project.Model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,6 +13,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Transaction {
 
@@ -24,7 +26,9 @@ public class Transaction {
 	@NotEmpty(message = "Transaction Type cannot be Empty.")
 	private String transactionType;
 
-	private LocalDate transactionDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@NotNull
+	private Date transactionDate;
 
 	@NotNull(message = "amount cannot be Null.")
 	@NotEmpty(message = "amount cannot be Empty.")
@@ -44,7 +48,7 @@ public class Transaction {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Transaction(Integer transactionId, String transactionType, LocalDate transactionDate, double amount,
+	public Transaction(Integer transactionId, String transactionType, Date transactionDate, double amount,
 			String description) {
 		this.transactionId = transactionId;
 		this.transactionType = transactionType;
@@ -69,11 +73,11 @@ public class Transaction {
 		this.transactionType = transactionType;
 	}
 
-	public LocalDate getTransactionDate() {
+	public Date getTransactionDate() {
 		return transactionDate;
 	}
 
-	public void setTransactionDate(LocalDate transactionDate) {
+	public void setTransactionDate(Date transactionDate) {
 		this.transactionDate = transactionDate;
 	}
 

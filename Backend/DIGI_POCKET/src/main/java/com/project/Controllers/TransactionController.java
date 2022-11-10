@@ -1,6 +1,6 @@
 package com.project.Controllers;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.Exceptions.TransactionException;
+import com.project.Exceptions.WalletException;
 import com.project.Model.Transaction;
 import com.project.Model.Wallet;
 import com.project.Services.TransactionService;
@@ -32,14 +33,16 @@ public class TransactionController {
 	}
 	
 	@GetMapping("/Transaction")
-	public ResponseEntity<List<Transaction>> viewAllTransactionByWalletHandler(@RequestBody Wallet wallet){
+	public ResponseEntity<List<Transaction>> viewAllTransactionByWalletHandler(@RequestBody Wallet wallet)
+			throws WalletException {
 		List<Transaction> transactions = tService.viewAllTransaction(wallet);
 		return new ResponseEntity<List<Transaction>>(transactions,HttpStatus.OK);
 	}
 	
-	@GetMapping("/Transaction/{from}/{to}")
-	public ResponseEntity<List<Transaction>> viewTransactionByDateHandler(@PathVariable("from") LocalDate from,@PathVariable("to") LocalDate to){
-		List<Transaction> transactions = tService.viewTransactionByDate(from, to);
+	@GetMapping("/Transaction/{from}/{to}/{Id}")
+	public ResponseEntity<List<Transaction>> viewTransactionByDateHandler(@PathVariable("from") Date from,
+			@PathVariable("to") Date to, @PathVariable("Id") Integer walletId) throws WalletException {
+		List<Transaction> transactions = tService.viewTransactionByDate(from, to, walletId);
 		return new ResponseEntity<List<Transaction>>(transactions,HttpStatus.OK);
 	}
 	

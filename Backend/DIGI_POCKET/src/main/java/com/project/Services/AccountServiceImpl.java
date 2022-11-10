@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.Exceptions.BankAccountException;
+import com.project.Exceptions.WalletException;
 import com.project.Model.BankAccount;
 import com.project.Model.Wallet;
 import com.project.Repositories.BankAccountRepo;
@@ -22,30 +23,57 @@ public class AccountServiceImpl implements AccountService {
 	private WalletRepo wRepo;
 
 	@Override
-	public Wallet addAccount(BankAccount account, Integer walletId) {
+	public Wallet addAccount(BankAccount account, Integer walletId) throws BankAccountException {
 		
-		BankAccount bb =  brepo.save(account);
+		Optional<Wallet> wallet = wRepo.findById(walletId);
+
+		List<BankAccount> accList = wallet.get().getBankAccounts();
 		
-		Optional<Wallet> w = wRepo.findById(walletId);
-		
-		return w.get();		
+		boolean flag = false;
+
+		for (BankAccount acc : accList) {
+			if (acc.getAccountNo().equals(account.getAccountNo())) {
+				flag = true;
+				break;
+			}
+		}
+
+		if (flag)
+			throw new BankAccountException("Bank Has already been added.");
+
+		account.setWallet(wallet.get());
+
+		wallet.get().getBankAccounts().add(account);
+
+		return wRepo.save(wallet.get());
+
 	}
 
 	@Override
-	public Wallet removeAccount(Integer accountNo, Integer walletId) throws BankAccountException {
+	public Wallet removeAccount(Integer accountNo, Integer walletId) throws BankAccountException, WalletException {
 		
-		Optional<Wallet> w = wRepo.findById(walletId);
+		Optional<Wallet> wallet = wRepo.findById(walletId);
 		
-		List<BankAccount> acc = w.get().getBankAccounts();
+		if (!wallet.isPresent())
+			throw new WalletException("Unknown User.");
+
+		List<BankAccount> accList =wallet.get().getBankAccounts();
 		
-		for (BankAccount a: acc) {
-			if (a.getAccountNo() == accountNo) {
-				brepo.deleteById(accountNo);
-			}else {
-				throw new BankAccountException();
+		boolean flag = false;
+
+		for (BankAccount acc : accList) {
+			if (acc.getAccountNo().equals(accountNo)) {
+				flag = true;
+				break;
 			}
 		}
-		return w.get();
+		
+		if (!flag)
+			throw new BankAccountException("Provided Bank account no not linked to the wallet.");
+
+		brepo.deleteById(accountNo);
+
+		return wallet.get();
 	}
 
 	@Override
@@ -54,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
 		Optional<Wallet> w = wRepo.findById(walletId);
 		
 		if(!w.isPresent()) {
-			throw new BankAccountException();
+			throw new BankAccountException("Invalid wallet Id.");
 		}
 		
 		return w.get().getBankAccounts();

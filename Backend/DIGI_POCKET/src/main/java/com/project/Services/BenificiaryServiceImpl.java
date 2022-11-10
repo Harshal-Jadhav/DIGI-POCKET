@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.Exceptions.BeneficiaryNotFoundException;
 import com.project.Exceptions.CustomerException;
+import com.project.Exceptions.WalletException;
 import com.project.Model.Beneficiary;
 import com.project.Model.Customer;
 import com.project.Model.Wallet;
@@ -23,45 +24,66 @@ public class BenificiaryServiceImpl implements BenificiaryService {
 
 	@Autowired
 	private WalletRepo walletRepo;
-	
+
 	@Autowired
 	private CustomerRepo customerRepo;
-	
-	@Override
-	public Beneficiary addBeneficiary(Beneficiary bd,Integer walletId) throws CustomerException {
-	  Optional<Wallet> opt =	walletRepo.findById(walletId);
-	  Optional<Beneficiary> opt2 = bRepo.findById(bd.getMobile());
-	  if(opt.isPresent() && opt2.isPresent()) {
-		  Wallet wallet = opt.get();
-		  List<Beneficiary> blist = wallet.getBeneficiaryList();
-		  blist.add(bd);
-		  opt2.get().getWalletList().add(wallet);
-	  }else{
-		  throw new CustomerException("customer not found..");
-	  }
-		return bRepo.save(opt2.get());
-	}
 
-	
 	@Override
-	public Beneficiary deleteBeneficiary(Beneficiary bd,Integer walletId) throws BeneficiaryNotFoundException {
-		Optional<Beneficiary> opt = bRepo.findById(bd.getMobile());
-		Optional<Wallet> w = walletRepo.findById(walletId);
-		if(w.isPresent()) {
-			Wallet w2 = w.get();
-			List<Beneficiary> blist = w2.getBeneficiaryList();
-			blist.removeIf(s->s.getMobile().equals(bd.getMobile()));
+	public Beneficiary addBeneficiary(Beneficiary bd, Integer walletId) throws CustomerException, WalletException {
+		Optional<Customer> customer = customerRepo.findById(bd.getMobile());
+		Optional<Wallet> wallet = walletRepo.findById(walletId);
+
+		if (!customer.isPresent())
+			throw new CustomerException("Beneficiary is not Registered to the Application.");
+
+		if (!wallet.isPresent())
+			throw new WalletException("Invalid User.");
+
+		Optional<Beneficiary> ben = bRepo.findById(bd.getMobile());
+
+		if (ben.isPresent()) {
+			ben.get().getWalletList().add(wallet.get());
+			return bRepo.save(ben.get());
+		} else {
+			bd.getWalletList().add(wallet.get());
+			return bRepo.save(bd);
 		}
-		if (opt.isPresent()) {
-			bRepo.delete(bd);
-			return bd;
-		} else
-			throw new BeneficiaryNotFoundException("beneficiary does not exsit");
-
 	}
 
-	
-	
+	@Override
+	public Beneficiary deleteBeneficiary(Beneficiary bd, Integer walletId)
+			throws BeneficiaryNotFoundException, WalletException {
+		Optional<Beneficiary> ben = bRepo.findById(bd.getMobile());
+		Optional<Wallet> wallet = walletRepo.findById(walletId);
+
+		if (!ben.isPresent())
+			throw new BeneficiaryNotFoundException("Invalid Beneficiary Details.");
+
+		if (!wallet.isPresent())
+			throw new WalletException("Invalid User.");
+
+		boolean flag = false;
+		List<Beneficiary> benList = wallet.get().getBeneficiaryList();
+
+		for (Beneficiary b : benList) {
+			if (b.getMobile().equals(b.getMobile())) {
+				flag = true;
+				break;
+			}
+		}
+
+		if (!flag)
+			throw new BeneficiaryNotFoundException("Beneficiary not linked with this account.");
+
+		List<Wallet> walletList = ben.get().getWalletList();
+
+		walletList.removeIf(w -> w.getWalletId().equals(walletId));
+		benList.removeIf(b -> b.getMobile().equals(bd.getMobile()));
+
+		walletRepo.save(wallet.get());
+		return bRepo.save(ben.get());
+	}
+
 	@Override
 	public Beneficiary viewBeneficiary(String mobile) throws BeneficiaryNotFoundException {
 		Optional<Beneficiary> opt = bRepo.findById(mobile);
@@ -71,27 +93,23 @@ public class BenificiaryServiceImpl implements BenificiaryService {
 			throw new BeneficiaryNotFoundException("Beneficiary not found");
 	}
 
-	
-	
 	@Override
-	public List<Beneficiary> viewAllBeneficiary(Customer customer) throws BeneficiaryNotFoundException, CustomerException {
+	public List<Beneficiary> viewAllBeneficiary(Customer customer)
+			throws BeneficiaryNotFoundException, CustomerException {
 		Optional<Customer> opt = customerRepo.findById(customer.getMobile());
 		List<Beneficiary> blist = null;
-		if(opt.isPresent()) {
+		if (opt.isPresent()) {
 			Customer c = opt.get();
-	        Wallet w = c.getWallet();
-	        blist = w.getBeneficiaryList();
-		}else {
+			Wallet w = c.getWallet();
+			blist = w.getBeneficiaryList();
+		} else {
 			throw new CustomerException("Customer not found");
 		}
-		
-		if(blist.size()!=0)
+
+		if (blist.size() != 0)
 			return blist;
 		else
 			throw new BeneficiaryNotFoundException("for this customer beneficiary not found");
 	}
-	
-	
-	
 
 }
