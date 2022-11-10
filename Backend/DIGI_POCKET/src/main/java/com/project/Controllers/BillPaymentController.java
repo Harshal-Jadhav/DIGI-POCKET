@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.Exceptions.InsufficientFundException;
 import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Model.BillPayment;
 import com.project.Model.Wallet;
@@ -29,7 +30,7 @@ public class BillPaymentController {
 	
 	@PostMapping("/addbill/{wallet_Id}")
 	public ResponseEntity<BillPayment> addBill(@PathVariable("wallet_Id") Integer Id, @RequestBody BillPayment bill)
-			throws InvalidCredentialsException {
+			throws InvalidCredentialsException, InsufficientFundException {
 		BillPayment savedbill = billservice.addBillPayment(bill, Id);
 		return new ResponseEntity<BillPayment>(savedbill, HttpStatus.ACCEPTED);
 	}

@@ -1,6 +1,5 @@
 package com.project.Model;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +24,7 @@ public class Wallet {
 
 	@NotNull(message = "balance cannot be Null.")
 	@Min(0)
-	private BigDecimal balance;
+	private double balance;
 
 	// Entity Relationships
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "wallet")
@@ -47,7 +46,7 @@ public class Wallet {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Wallet(BigDecimal balance) {
+	public Wallet(double balance) {
 		this.balance = balance;
 	}
 
@@ -59,11 +58,11 @@ public class Wallet {
 		this.walletId = walletId;
 	}
 
-	public BigDecimal getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(BigDecimal balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 
