@@ -1,47 +1,34 @@
 package com.project.Model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Transaction {
 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer transactionId;
-
-	@NotNull(message = "Transaction Type cannot be Null.")
-	@NotEmpty(message = "Transaction Type cannot be Empty.")
+	
 	private String transactionType;
+	
+	private LocalDate transactionDate;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-	@NotNull
-	private Date transactionDate;
-
-	@NotNull(message = "amount cannot be Null.")
-	@NotEmpty(message = "amount cannot be Empty.")
-	@Min(1)
 	private double amount;
 
-	@NotNull(message = "Description cannot be Null.")
-	@NotEmpty(message = "Description cannot be Empty.")
 	private String description;
 
-	// Entity RelationShips
-	@ManyToOne(cascade = CascadeType.ALL)
+	// Entity RelationShip
+	@ManyToOne
 	@JoinColumn(name = "walletId")
 	@JsonIgnore
 	private Wallet wallet;
@@ -50,9 +37,8 @@ public class Transaction {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Transaction(Integer transactionId, String transactionType, Date transactionDate, double amount,
-			String description) {
-		this.transactionId = transactionId;
+	public Transaction(String transactionType, LocalDate transactionDate, double amount, String description) {
+		super();
 		this.transactionType = transactionType;
 		this.transactionDate = transactionDate;
 		this.amount = amount;
@@ -75,11 +61,11 @@ public class Transaction {
 		this.transactionType = transactionType;
 	}
 
-	public Date getTransactionDate() {
+	public LocalDate getTransactionDate() {
 		return transactionDate;
 	}
 
-	public void setTransactionDate(Date transactionDate) {
+	public void setTransactionDate(LocalDate transactionDate) {
 		this.transactionDate = transactionDate;
 	}
 

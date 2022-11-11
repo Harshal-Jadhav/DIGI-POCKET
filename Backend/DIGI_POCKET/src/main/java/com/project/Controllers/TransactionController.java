@@ -1,6 +1,6 @@
 package com.project.Controllers;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +32,8 @@ public class TransactionController {
 
 //	take input form the reqbody.
 	@GetMapping("viewAll/{from}/{to}/{walletId}")
-	public ResponseEntity<List<Transaction>> getAllTransactionsByDate(@PathVariable("from") Date from,
-			@PathVariable("to") Date to, @PathVariable("walletId") Integer wallet_Id) throws WalletException {
+	public ResponseEntity<List<Transaction>> getAllTransactionsByDate(@PathVariable("from") LocalDate from,
+			@PathVariable("to") LocalDate to, @PathVariable("walletId") Integer wallet_Id) throws WalletException {
 		List<Transaction> tranList = tService.viewTransactionByDate(from, to, wallet_Id);
 		return new ResponseEntity<List<Transaction>>(tranList, HttpStatus.OK);
 	}

@@ -49,7 +49,7 @@ public class BeneficiaryController {
 		return new ResponseEntity<Beneficiary>(ben, HttpStatus.OK);
 	}
 	
-	@GetMapping("view")
+	@PostMapping("view")
 	public ResponseEntity<List<Beneficiary>> getAllBeneficiary(@RequestBody Customer customer)
 			throws BeneficiaryNotFoundException, CustomerException {
 		List<Beneficiary> benList = benService.viewAllBeneficiary(customer);

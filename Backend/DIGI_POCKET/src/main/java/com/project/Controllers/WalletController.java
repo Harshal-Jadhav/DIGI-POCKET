@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.Exceptions.CustomerException;
 import com.project.Exceptions.InsufficientFundException;
 import com.project.Exceptions.WalletException;
+import com.project.Model.BankAccount;
 import com.project.Model.Customer;
 import com.project.Model.Wallet;
 import com.project.Services.WalletService;
@@ -44,12 +45,13 @@ public class WalletController {
 	// Need to connect with the bank
 	@PutMapping("/deposit/{mob}/{amount}")
 	public ResponseEntity<Customer> depositMoney(@PathVariable("mob") String mobile,
-			@PathVariable("amount") double amount) throws CustomerException {
-		Customer customer = wService.depositAmount(mobile, amount);
+			@PathVariable("amount") double amount, @RequestBody BankAccount acc)
+			throws CustomerException, WalletException {
+		Customer customer = wService.depositAmount(mobile, amount, acc);
 		return new ResponseEntity<Customer>(customer,HttpStatus.OK);
 	}
 	
-//	NOT Wooking.
+
 	@PutMapping("/update")
 	public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer) throws CustomerException {
 		Customer cus = wService.updateAccount(customer);
@@ -57,11 +59,12 @@ public class WalletController {
 	}
 	
 //	need to connect with the bank
-	@PostMapping("/deposit/{amount}")
-	public ResponseEntity<Customer> AddMoney(@PathVariable("amount") double amount, @RequestBody Wallet wallet)
+	@PostMapping("/deposit/{Id}/{amount}")
+	public ResponseEntity<Wallet> AddMoney(@PathVariable("Id") Integer walletId,
+			@PathVariable("amount") double amount, @RequestBody BankAccount acc)
 			throws CustomerException, WalletException {
-		Customer customer = wService.addMoney(wallet, amount);
-		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+		Wallet wallet = wService.addMoney(walletId, amount, acc);
+		return new ResponseEntity<Wallet>(wallet, HttpStatus.OK);
 	}
 	
 	

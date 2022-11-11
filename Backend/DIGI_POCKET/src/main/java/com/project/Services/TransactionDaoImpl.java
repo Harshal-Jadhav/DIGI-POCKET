@@ -1,7 +1,7 @@
 package com.project.Services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +41,7 @@ public class TransactionDaoImpl implements TransactionService{
 	}
 
 	@Override
-	public List<Transaction> viewTransactionByDate(Date from, Date to, Integer wallet_Id)
+	public List<Transaction> viewTransactionByDate(LocalDate from, LocalDate to, Integer wallet_Id)
 			throws WalletException {
 		Optional<Wallet> wallet = wRepo.findById(wallet_Id);
 		
@@ -51,7 +51,8 @@ public class TransactionDaoImpl implements TransactionService{
 		List<Transaction> tranList =  wallet.get().getTransactions();
 		List<Transaction> filtered = new ArrayList<>();
 		for(Transaction t : tranList) {
-			if(t.getTransactionDate().compareTo(from)>=0 && t.getTransactionDate().compareTo(to)<=0) {
+			if ((t.getTransactionDate().isAfter(from) && t.getTransactionDate().isBefore(to))
+					|| t.getTransactionDate().equals(from) || t.getTransactionDate().equals(to)) {
 				filtered.add(t);
 			}
 		}

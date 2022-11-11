@@ -18,7 +18,6 @@ import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.BillPayment;
 import com.project.Model.Customer;
-import com.project.Model.Transaction;
 import com.project.Model.Wallet;
 import com.project.Repositories.CustomerRepo;
 import com.project.Repositories.TransactionRepo;
@@ -58,15 +57,6 @@ public class BillPaymentController {
 		return wallet.get();
 	}
 
-	@GetMapping("/addTran")
-	public Transaction addTransaction() {
-		Transaction tran = new Transaction();
-		tran.setTransactionType("transfer");
-		tran.setDescription("transfer");
-//		tran.setTransactionDate(new Date());
-		tran.setAmount(5000);
-		return tr.save(tran);
-	}
 
 	@PostMapping("/add/{walletId}")
 	public ResponseEntity<BillPayment> addNewBill(@PathVariable("walletId") Integer wallet_Id,

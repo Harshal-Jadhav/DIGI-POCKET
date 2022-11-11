@@ -1,6 +1,6 @@
 package com.project.Services;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.project.Exceptions.TransactionException;
@@ -13,7 +13,8 @@ public interface TransactionService {
 
 	public List<Transaction> viewAllTransaction(Integer wallet_Id) throws WalletException;
 
-	public List<Transaction> viewTransactionByDate(Date from, Date to, Integer wallet_Id) throws WalletException;
+	public List<Transaction> viewTransactionByDate(LocalDate from, LocalDate to, Integer wallet_Id)
+			throws WalletException;
 
 	public Transaction viewTransaction(Integer transactionId) throws TransactionException;
 
