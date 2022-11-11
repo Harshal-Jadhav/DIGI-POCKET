@@ -1,0 +1,80 @@
+
+body{
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+
+#main{
+    width: 80%;
+    height: auto;
+    margin: auto;
+}
+.cards{
+    /* border: 1px solid red; */
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: 10px;
+    width: 90%;
+    height: 200px;
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: flex;
+}
+.bal{
+    border: 1px solid red;
+    width: 50%;
+    margin: auto;
+    height: 80%;
+    gap: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#button_sec{
+    /* border: 1px solid teal; */
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    width: 90%;
+    height: 150px;
+    margin: auto;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 60px;
+}
+.but_sec > button{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+}
+.but_sec > p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+button:hover{
+    background-color: rgb(38, 172, 230);
+    cursor: pointer;
+}
+#container-2{
+    /* border: 1px solid red; */
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: 10px;
+    display: flex;
+    width: 90%;
+    height: 180px;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    column-gap: 30px;
+}
+.bottomr_d{
+    border: 1px solid red;
+    width: 180px;
+    height: 100px;
+}
