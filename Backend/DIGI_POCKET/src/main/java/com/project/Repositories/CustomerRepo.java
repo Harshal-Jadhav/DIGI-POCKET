@@ -7,5 +7,7 @@ import com.project.Model.Customer;
 
 @Repository
 public interface CustomerRepo extends JpaRepository<Customer, String> {
+	
+	public Customer findByMobile(String mobile);
 
 }

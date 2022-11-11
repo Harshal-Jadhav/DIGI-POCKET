@@ -7,6 +7,6 @@ import com.project.Model.Customer;
 
 public interface UserService {
 	
-	
-	
+	public Customer RegisterCustomer(Customer customer) throws CustomerException;
 }
+
