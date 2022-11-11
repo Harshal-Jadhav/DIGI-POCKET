@@ -8,7 +8,6 @@ import com.project.Model.Wallet;
 
 public interface WalletService {
 	
-	public Customer createAccount(String name, String mobileno, String password);
 
 	public Wallet showBalance(String mobileno) throws CustomerException;
 	

@@ -25,13 +25,6 @@ public class WalletController {
 	@Autowired
 	private WalletService wService;
 
-//	Need to check not working.
-	@GetMapping("/create/{name}/{mob}/{pass}")
-	public ResponseEntity<Customer> createAccount(@PathVariable("name") String name, @PathVariable("mob") String mob,
-			@PathVariable("pass") String pass) {
-		Customer customer = wService.createAccount(name, mob, pass);
-		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
-	}
 	
 	@GetMapping("/showbalance/{mob}")
 	public ResponseEntity<Wallet> showWalletBalance(@PathVariable("mob") String mobile) throws CustomerException {

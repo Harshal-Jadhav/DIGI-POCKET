@@ -22,22 +22,6 @@ public class WalletServiceImpl implements WalletService{
 	@Autowired
 	private CustomerRepo cRepo;
 
-	@Override
-	public Customer createAccount(String name, String mobileno, String password) {
-
-		Wallet wa = new Wallet();
-		wa.setBalance(0);
-
-		Customer customer = new Customer();
-		customer.setMobile(mobileno);
-		customer.setName(name);
-		customer.setPassword(password);
-		customer.setWallet(wa);
-
-		Customer customer1 = cRepo.save(customer);
-
-		return customer1;
-	}
 
 	@Override
 	public Wallet showBalance(String mobileno) throws CustomerException {

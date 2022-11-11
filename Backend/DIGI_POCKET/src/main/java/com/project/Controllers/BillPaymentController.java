@@ -18,7 +18,10 @@ import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.BillPayment;
 import com.project.Model.Customer;
+import com.project.Model.Transaction;
 import com.project.Model.Wallet;
+import com.project.Repositories.CustomerRepo;
+import com.project.Repositories.TransactionRepo;
 import com.project.Repositories.WalletRepo;
 import com.project.Services.BillPaymentService;
 
@@ -32,11 +35,20 @@ public class BillPaymentController {
 	@Autowired
 	WalletRepo wr;
 
+	@Autowired
+	CustomerRepo cr;
+
+	@Autowired
+	TransactionRepo tr;
+
 	@GetMapping("/create/{amount}")
 	public Wallet createWallet(@PathVariable("amount") double amount) {
 		Wallet w = new Wallet(amount);
-		w.setCustomer(new Customer("8149392368", "Harshal", "Harshal@6342"));
+		Customer c = new Customer("Harshal", "8149382368", "Harshal@6342");
+		w.setCustomer(c);
+		c.setWallet(w);
 		Wallet wallet = wr.save(w);
+		cr.save(c);
 		return wallet;
 	}
 	
@@ -45,6 +57,17 @@ public class BillPaymentController {
 		Optional<Wallet> wallet = wr.findById(Id);
 		return wallet.get();
 	}
+
+	@GetMapping("/addTran")
+	public Transaction addTransaction() {
+		Transaction tran = new Transaction();
+		tran.setTransactionType("transfer");
+		tran.setDescription("transfer");
+//		tran.setTransactionDate(new Date());
+		tran.setAmount(5000);
+		return tr.save(tran);
+	}
+
 	@PostMapping("/add/{walletId}")
 	public ResponseEntity<BillPayment> addNewBill(@PathVariable("walletId") Integer wallet_Id,
 			@RequestBody BillPayment bill) throws InvalidCredentialsException, InsufficientFundException {

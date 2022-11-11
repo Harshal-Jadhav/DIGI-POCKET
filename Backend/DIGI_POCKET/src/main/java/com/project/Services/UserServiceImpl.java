@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.Exceptions.CustomerException;
 import com.project.Model.Customer;
+import com.project.Model.Wallet;
 import com.project.Repositories.CustomerRepo;
 import com.project.Repositories.SessionRepo;
 
@@ -22,6 +23,9 @@ public class UserServiceImpl implements UserService {
 		if (registerdCustomer != null) {
 			throw new CustomerException("Customer already exist with this mobile number");
 		} else {
+			Wallet wallet = new Wallet(0);
+			wallet.setCustomer(customer);
+			customer.setWallet(wallet);
 			return cRepo.save(customer);
 		}
 	}
