@@ -1,0 +1,96 @@
+#container {
+    width: 35%;
+    margin: auto;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-top: 20px;
+    border-radius: 12px;
+}
+
+#container>h2 {
+    text-align: center;
+    padding-top: 20px;
+}
+
+#container input {
+    padding: 10px 20px 10px 20px;
+    width: 80%;
+    border-radius: 8px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+
+form {
+    width: 80%;
+    margin: auto;
+}
+
+#signup {
+    background-color: #18191a;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 90%;
+    border-radius: 8px;
+    margin-top: 50px;
+}
+
+img {
+    margin-left: 45%;
+}
+
+span a{
+    color: crimson;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+button+p {
+    font-size: 20px;
+    margin-top: 20px;
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+
+
+
+/* for mobile screen */
+
+@media all and (min-width: 320px) and (max-width: 720px){
+    #container {
+        width: 100%;
+        margin: auto;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        margin-top: 10px;
+        border-radius: 10px;
+    }
+    
+    #container>h2 {
+        text-align: center;
+        padding-top: 10px;
+    }
+    
+}
+
+
+/* for midum screen */
+
+@media all and (min-width: 720px) and (max-width: 1024px) {
+    #container {
+        width: 50%;
+        margin: auto;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        margin-top: 10px;
+        border-radius: 10px;
+    }
+    
+    #container>h2 {
+        text-align: center;
+        padding-top: 10px;
+    }
+}
