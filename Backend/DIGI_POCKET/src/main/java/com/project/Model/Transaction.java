@@ -27,7 +27,7 @@ public class Transaction {
 	@NotEmpty(message = "Transaction Type cannot be Empty.")
 	private String transactionType;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@NotNull
 	private Date transactionDate;
 

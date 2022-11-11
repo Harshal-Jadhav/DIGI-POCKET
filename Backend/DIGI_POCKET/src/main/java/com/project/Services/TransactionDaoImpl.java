@@ -31,8 +31,8 @@ public class TransactionDaoImpl implements TransactionService{
 	}
 
 	@Override
-	public List<Transaction> viewAllTransaction(Wallet wallet) throws WalletException {
-		Optional<Wallet> wal = wRepo.findById(wallet.getWalletId());
+	public List<Transaction> viewAllTransaction(Integer wallet_Id) throws WalletException {
+		Optional<Wallet> wal = wRepo.findById(wallet_Id);
 
 		if (!wal.isPresent())
 			throw new WalletException("Invalid Wallet Details.");
