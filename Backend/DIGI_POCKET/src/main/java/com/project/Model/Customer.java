@@ -28,7 +28,7 @@ public class Customer {
 	@NotEmpty(message = "password cannot be Empty.")
 	private String password;
 
-	// Entity Relationships
+//	// Entity Relationships
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "walletId")
 	@JsonIgnore
@@ -38,11 +38,10 @@ public class Customer {
 		
 	}
 
-	public Customer(String mobile, String name, String password, Wallet wallet) {		
+	public Customer(String mobile, String name, String password) {
 		this.mobile = mobile;
 		this.name = name;
 		this.password = password;
-		this.wallet = wallet;
 	}
 
 	public String getMobile() {

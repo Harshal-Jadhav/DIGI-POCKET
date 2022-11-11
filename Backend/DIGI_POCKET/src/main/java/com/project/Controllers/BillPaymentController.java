@@ -1,10 +1,12 @@
 package com.project.Controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +17,9 @@ import com.project.Exceptions.InsufficientFundException;
 import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.BillPayment;
+import com.project.Model.Customer;
+import com.project.Model.Wallet;
+import com.project.Repositories.WalletRepo;
 import com.project.Services.BillPaymentService;
 
 @RestController
@@ -23,7 +28,23 @@ public class BillPaymentController {
 
 	@Autowired
 	BillPaymentService billservice;
+
+	@Autowired
+	WalletRepo wr;
+
+	@GetMapping("/create/{amount}")
+	public Wallet createWallet(@PathVariable("amount") double amount) {
+		Wallet w = new Wallet(amount);
+		w.setCustomer(new Customer("8149392368", "Harshal", "Harshal@6342"));
+		Wallet wallet = wr.save(w);
+		return wallet;
+	}
 	
+	@GetMapping("/{Id}")
+	public Wallet getWallet(@PathVariable("Id") Integer Id) {
+		Optional<Wallet> wallet = wr.findById(Id);
+		return wallet.get();
+	}
 	@PostMapping("/add/{walletId}")
 	public ResponseEntity<BillPayment> addNewBill(@PathVariable("walletId") Integer wallet_Id,
 			@RequestBody BillPayment bill) throws InvalidCredentialsException, InsufficientFundException {
