@@ -9,6 +9,5 @@ import com.project.Model.Wallet;
 @Repository
 public interface WalletRepo extends JpaRepository<Wallet, Integer> {
 
-	void save(Customer customer);
 
 }
