@@ -1,5 +1,7 @@
 package com.project.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,27 +13,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.Exceptions.InsufficientFundException;
 import com.project.Exceptions.InvalidCredentialsException;
+import com.project.Exceptions.WalletException;
 import com.project.Model.BillPayment;
-import com.project.Model.Wallet;
 import com.project.Services.BillPaymentService;
 
 @RestController
-@RequestMapping("/billpayment")
+@RequestMapping("/digipocket/bill")
 public class BillPaymentController {
 
 	@Autowired
 	BillPaymentService billservice;
 	
-	@PostMapping("/addwallet")
-	public ResponseEntity<Wallet> addWallet(@RequestBody Wallet wallet) {
-		Wallet savedWallet = billservice.addwallet(wallet);
-		return new ResponseEntity<Wallet>(savedWallet,HttpStatus.CREATED);
+	@PostMapping("/add/{walletId}")
+	public ResponseEntity<BillPayment> addNewBill(@PathVariable("walletId") Integer wallet_Id,
+			@RequestBody BillPayment bill) throws InvalidCredentialsException, InsufficientFundException {
+		BillPayment savedBill = billservice.addBillPayment(bill, wallet_Id);
+		return new ResponseEntity<BillPayment>(savedBill, HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/addbill/{wallet_Id}")
-	public ResponseEntity<BillPayment> addBill(@PathVariable("wallet_Id") Integer Id, @RequestBody BillPayment bill)
-			throws InvalidCredentialsException, InsufficientFundException {
-		BillPayment savedbill = billservice.addBillPayment(bill, Id);
-		return new ResponseEntity<BillPayment>(savedbill, HttpStatus.ACCEPTED);
+	
+	public ResponseEntity<List<BillPayment>> getAllBills(@PathVariable("walletId") Integer wallet_Id)
+			throws InvalidCredentialsException, WalletException {
+		List<BillPayment> billList = billservice.viewAllBillPayments(wallet_Id);
+		return new ResponseEntity<List<BillPayment>>(billList, HttpStatus.OK);
 	}
 }
