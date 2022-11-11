@@ -9,6 +9,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Customer {
 
@@ -29,6 +31,7 @@ public class Customer {
 	// Entity Relationships
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "walletId")
+	@JsonIgnore
 	private Wallet wallet;
 	
 	public Customer() {

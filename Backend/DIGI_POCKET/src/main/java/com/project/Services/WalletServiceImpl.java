@@ -1,17 +1,19 @@
 package com.project.Services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.project.Exceptions.CustomerException;
+import com.project.Exceptions.InsufficientFundException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.Customer;
 import com.project.Model.Wallet;
 import com.project.Repositories.CustomerRepo;
 import com.project.Repositories.WalletRepo;
 
+@Service
 public class WalletServiceImpl implements WalletService{
 	
 	@Autowired
@@ -22,28 +24,28 @@ public class WalletServiceImpl implements WalletService{
 
 	@Override
 	public Customer createAccount(String name, String mobileno, String password) {
-		
+
 		Wallet wa = new Wallet();
 		wa.setBalance(0);
-		
+
 		Customer customer = new Customer();
 		customer.setMobile(mobileno);
 		customer.setName(name);
 		customer.setPassword(password);
 		customer.setWallet(wa);
-		
+
 		Customer customer1 = cRepo.save(customer);
-		
+
 		return customer1;
 	}
 
 	@Override
-	public Customer showBalance(String mobileno) throws CustomerException {
+	public Wallet showBalance(String mobileno) throws CustomerException {
 		
 		Optional<Customer> cst = cRepo.findById(mobileno);
 		
 		if(cst.isPresent()) {
-			return cst.get();
+			return cst.get().getWallet();
 			
 		} else 
 			throw new CustomerException("Customer not found");
@@ -52,7 +54,8 @@ public class WalletServiceImpl implements WalletService{
 	}
 
 	@Override
-	public String fundTransfer(String sourceMobileNo, String targetMobileNo, double amount) throws CustomerException {
+	public String fundTransfer(String sourceMobileNo, String targetMobileNo, double amount)
+			throws CustomerException, InsufficientFundException {
 		
 		Optional<Customer> customer1 = cRepo.findById(sourceMobileNo);
 		
@@ -66,6 +69,9 @@ public class WalletServiceImpl implements WalletService{
 			throw new CustomerException("Receiver account is not found");
 		}
 		
+		
+		if (customer1.get().getWallet().getBalance() < amount)
+			throw new InsufficientFundException("Insufficient Funds in your Wallet.");
 		
 		double updatedBalance1 = customer1.get().getWallet().getBalance()-amount;
 		customer1.get().getWallet().setBalance(updatedBalance1);
