@@ -26,6 +26,8 @@
 ❖ Add Bill payments to the Wallet. View all Past Bills.
 
 ❖ View all past Transactions.
+
+❖ User LogOut.
 </div
 
 ## 🛠 Toolkit we Used: 
