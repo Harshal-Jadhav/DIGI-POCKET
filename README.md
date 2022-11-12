@@ -1,11 +1,7 @@
 <div><h1 align="center">DIGI Pocket APi ( v 0.1.0 )</h1>
-
-<h2 align="center">An REST API Application that will return the response status code, response headers, and potentially a response body.</h2>
-
-<h1>🔖 About The Project</h1></div
-
-
-This is a payment wallet application that will perform **_`CURD`_** operations on various Entities. We will be looking into all the Entities soon.
+<h1>🔖 About The Project</h1>
+<h2 align="justify">Its a Spring-Boot application project to develop REST API for the Online Payement Wallet app which will return the response status code, response headers, and potentially a response body and is able to perform all the CURD operations</h2>
+<!-- This is a payment wallet application that will perform **_`CURD`_** operations on various Entities. We will be looking into all the Entities soon. -->
 
 >This is an Colaborative Project wich has been completed in 4 days.
 
@@ -30,7 +26,7 @@ This is a payment wallet application that will perform **_`CURD`_** operations o
 ❖ Add Bill payments to the Wallet. View all Past Bills.
 
 ❖ View all past Transactions.
-
+</div
 
 ## 🛠 Toolkit we Used: 
 <div>
