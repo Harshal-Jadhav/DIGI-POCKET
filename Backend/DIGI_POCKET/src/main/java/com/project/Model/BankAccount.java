@@ -1,7 +1,5 @@
 package com.project.Model;
 
-import java.math.BigDecimal;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,7 +27,7 @@ public class BankAccount {
 	
 	@NotNull(message = "Balance cannot be null")
 	@Min(0)
-	private BigDecimal balance;
+	private double balance;
 
 	// Entity Relationships
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -41,7 +39,7 @@ public class BankAccount {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BankAccount(Integer accountNo, String ifscCode, String bankName, BigDecimal balance) {
+	public BankAccount(Integer accountNo, String ifscCode, String bankName, double balance) {
 		this.accountNo = accountNo;
 		this.ifscCode = ifscCode;
 		this.bankName = bankName;
@@ -72,11 +70,11 @@ public class BankAccount {
 		this.bankName = bankName;
 	}
 
-	public BigDecimal getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(BigDecimal balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 

@@ -43,6 +43,7 @@ public class BenificiaryServiceImpl implements BenificiaryService {
 
 		if (ben.isPresent()) {
 			ben.get().getWalletList().add(wallet.get());
+			wallet.get().getBeneficiaryList().add(ben.get());
 			return bRepo.save(ben.get());
 		} else {
 			bd.getWalletList().add(wallet.get());

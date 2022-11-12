@@ -71,7 +71,12 @@ public class AccountServiceImpl implements AccountService {
 		if (!flag)
 			throw new BankAccountException("Provided Bank account no not linked to the wallet.");
 
-		brepo.deleteById(accountNo);
+		List<BankAccount> accounts = wallet.get().getBankAccounts();
+
+		accounts.removeIf(ac -> ac.getAccountNo().equals(accountNo));
+		Optional<BankAccount> a = brepo.findById(accountNo);
+		a.get().setWallet(null);
+		brepo.save(a.get());
 
 		return wallet.get();
 	}

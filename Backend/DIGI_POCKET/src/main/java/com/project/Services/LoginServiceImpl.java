@@ -3,6 +3,7 @@ package com.project.Services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.project.Exceptions.LoginException;
 import com.project.Model.CurrentUserSession;
@@ -13,7 +14,8 @@ import com.project.Repositories.SessionRepo;
 
 import net.bytebuddy.utility.RandomString;
 
-public class LoginServiceImpl implements LoginService{
+@Service
+public class LoginServiceImpl implements LoginService {
 	@Autowired
 	private CustomerRepo cRepo;
 	@Autowired
@@ -22,22 +24,22 @@ public class LoginServiceImpl implements LoginService{
 	@Override
 	public String LoginToAccount(LoginDTO loginDTO) throws LoginException {
 		Customer existingCustomer = cRepo.findByMobile(loginDTO.getMobile());
-		if(existingCustomer == null) {
+		if (existingCustomer == null) {
 			throw new LoginException("please enter valid mobile number");
-			
+
 		}
 		Optional<CurrentUserSession> validCustomerSessionOpt = sRepo.findById(existingCustomer.getMobile());
-		if(validCustomerSessionOpt.isPresent()) {
+		if (validCustomerSessionOpt.isPresent()) {
 			throw new LoginException("User already logged in with this number");
 		}
-		if(existingCustomer.getPassword().equals(loginDTO.getPassword())) {
+		if (existingCustomer.getPassword().equals(loginDTO.getPassword())) {
 			String key = RandomString.make(6);
 			CurrentUserSession currentUserSession = new CurrentUserSession();
 			currentUserSession.setKey(key);
 			currentUserSession.setMobile(existingCustomer.getMobile());
 			sRepo.save(currentUserSession);
-			return currentUserSession.toString();
-		}else {
+			return key;
+		} else {
 			throw new LoginException("please enter valid password");
 		}
 	}
@@ -45,13 +47,12 @@ public class LoginServiceImpl implements LoginService{
 	@Override
 	public String LogOutFromAccount(String Key) throws LoginException {
 		CurrentUserSession currentUserSession = sRepo.findByKey(Key);
-		if(currentUserSession == null) {
+		if (currentUserSession == null) {
 			throw new LoginException("user not logged in with this number");
-		}else {
+		} else {
 			sRepo.delete(currentUserSession);
 			return "logged out !";
 		}
 	}
 
-	
 }

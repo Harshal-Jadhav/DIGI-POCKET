@@ -26,8 +26,8 @@ public class Wallet {
 	@Min(0)
 	private double balance;
 
-	// Entity Relationships
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "wallet")
+//	 Entity Relationships
+	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wallet")

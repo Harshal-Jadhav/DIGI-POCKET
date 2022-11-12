@@ -7,8 +7,11 @@ public class LoginDTO {
 	
 	
 	
+	public LoginDTO() {
+		// TODO Auto-generated constructor stub
+	}
 	public LoginDTO(String mobile, String password) {
-		super();
+
 		this.mobile = mobile;
 		this.password = password;
 	}

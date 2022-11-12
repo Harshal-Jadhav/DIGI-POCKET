@@ -26,11 +26,9 @@ public class GlobalExceptionHandler {
 		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
-	
-
 
 	@ExceptionHandler(InvalidCredentialsException.class)
-	public ResponseEntity<ErrorDetails> InvalidCredentialsException(InvalidCredentialsException e , WebRequest wr){
+	public ResponseEntity<ErrorDetails> InvalidCredentialsException(InvalidCredentialsException e, WebRequest wr) {
 		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
@@ -40,21 +38,36 @@ public class GlobalExceptionHandler {
 		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), we.getMessage(), wr.getDescription(false));
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	// BankAccount Exception added by Suresh
-	
+
 	@ExceptionHandler(BankAccountException.class)
 	public ResponseEntity<ErrorDetails> accountNotFoundException(BankAccountException e, WebRequest wr) {
 		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(InsufficientFundException.class)
+	public ResponseEntity<ErrorDetails> insufficientFundException(InsufficientFundException e, WebRequest wr) {
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(TransactionException.class)
+	public ResponseEntity<ErrorDetails> TransactionException(TransactionException e, WebRequest wr) {
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(LoginException.class)
+	public ResponseEntity<ErrorDetails> loginException(LoginException e, WebRequest wr) {
+		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.BAD_REQUEST);
+	}
 	// End of User Defined Exceptions:------->
-	
-	
 
 	// Default Exceptions Listed Below:----->
-	
+
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ResponseEntity<ErrorDetails> NoHandlerFoundException(NoHandlerFoundException e, WebRequest wr) {
 		ErrorDetails ed = new ErrorDetails(LocalDateTime.now(), e.getMessage(), wr.getDescription(false));

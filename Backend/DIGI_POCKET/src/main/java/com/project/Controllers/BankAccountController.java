@@ -17,6 +17,7 @@ import com.project.Exceptions.BankAccountException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.BankAccount;
 import com.project.Model.Wallet;
+import com.project.Repositories.WalletRepo;
 import com.project.Services.AccountService;
 
 @RestController
@@ -26,6 +27,15 @@ public class BankAccountController {
 	@Autowired
 	private AccountService accService;
 
+	@Autowired
+	private WalletRepo wRepo;
+
+	@GetMapping("/{Id}")
+	public ResponseEntity<Wallet> getWallet(@PathVariable("Id") Integer Id) {
+		Wallet wallet = wRepo.getById(Id);
+		return new ResponseEntity<Wallet>(wallet, HttpStatus.OK);
+	}
+
 	@PostMapping("/add/{walletId}")
 	public ResponseEntity<Wallet> addNewBankAccount(@PathVariable("walletId") Integer wallet_Id,
 			@RequestBody BankAccount account) throws BankAccountException {
@@ -33,6 +43,7 @@ public class BankAccountController {
 		return new ResponseEntity<Wallet>(wallet, HttpStatus.CREATED);
 	}
 	
+
 	@DeleteMapping("/delete/{walletId}")
 	public ResponseEntity<Wallet> removeBankAccount(@PathVariable("walletId") Integer wallet_Id,
 			@RequestBody BankAccount account) throws BankAccountException, WalletException {
