@@ -9,9 +9,10 @@ body{
     width: 80%;
     height: auto;
     margin: auto;
+    margin-top: 20px;
 }
 .cards{
-    /* border: 1px solid red; */
+    border: 2px solid rgb(238, 178, 67);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     border-radius: 10px;
     width: 90%;
@@ -29,9 +30,12 @@ body{
     gap: 10px;
     margin-left: 10px;
     margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #button_sec{
-    /* border: 1px solid teal; */
+    border: 2px solid rgb(21, 144, 245);
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     width: 90%;
@@ -61,7 +65,7 @@ button:hover{
     cursor: pointer;
 }
 #container-2{
-    /* border: 1px solid red; */
+    border: 2px solid rgb(238, 178, 67);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     border-radius: 10px;
     display: flex;
@@ -77,4 +81,107 @@ button:hover{
     border: 1px solid red;
     width: 180px;
     height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ======================== RESPONSIVENESS ==================== */
+/* -------------------- MEDIUM SCREEN --------------- */
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    
+    .cards{
+        /* border: 1px solid red; */
+        border: 2px solid rgb(238, 178, 67);
+        height: 140px;
+        margin: auto;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        display: flex;
+    }
+    .bal{
+        border: 1px solid red;
+        width: 50%;
+        margin: auto;
+        height: 80%;
+        gap: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    
+    #button_sec{        
+        height: 100px;
+        column-gap: 30px;
+        border: 2px solid rgb(21, 144, 245);
+    }
+    .but_sec > button{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 1px solid transparent;
+    }
+    .but_sec > p{
+        font-size: 12px;
+    }
+    #container-2{
+        height: 130px;
+        column-gap: 0px;
+        border: 2px solid rgb(238, 178, 67);
+    }
+    .bottomr_d{
+        border: 1px solid red;
+        width: 150px;
+        height: 80px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+}
+
+/* -------------------- SMALL SCREEN --------------- */
+@media all and (min-width: 340px) and (max-width: 767px) {
+    
+    .cards{
+        height: 90px;
+        margin: auto;
+        margin-bottom: 10px;
+    }
+    .bal{
+        border: 1px solid red;
+        width: 50%;
+        margin: auto;
+        height: 60PX;
+        gap: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    
+    #button_sec{        
+        height: 80px;
+        column-gap: 10px;
+        border: 2px solid rgb(21, 144, 245);
+    }
+    .but_sec > button{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid transparent;
+    }
+    .but_sec > p{
+        font-size: 8px;
+    }
+    #container-2{
+        height: 80px;
+        column-gap: 0px;
+        border: 2px solid rgb(238, 178, 67);
+    }
+    .bottomr_d{
+        border: 1px solid red;
+        width: 80px;
+        height: 50px;
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+
 }
