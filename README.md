@@ -28,9 +28,10 @@
 ❖ View all past Transactions.
 
 ❖ User LogOut.
-</div
+</div>
 
-## 🛠 Toolkit we Used: 
+<h1>🛠 Toolkit we Used: </h1>
+ 
 <div>
 
  [![My Skills](https://skills.thijs.gg/icons?i=java,spring,hibernate,maven,mysql,git)](https://skills.thijs.gg)
