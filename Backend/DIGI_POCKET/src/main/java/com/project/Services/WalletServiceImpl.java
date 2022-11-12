@@ -8,13 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.project.Exceptions.CustomerException;
 import com.project.Exceptions.InsufficientFundException;
+import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.BankAccount;
+import com.project.Model.CurrentUserSession;
 import com.project.Model.Customer;
 import com.project.Model.Transaction;
 import com.project.Model.Wallet;
 import com.project.Repositories.BankAccountRepo;
 import com.project.Repositories.CustomerRepo;
+import com.project.Repositories.SessionRepo;
 import com.project.Repositories.TransactionRepo;
 import com.project.Repositories.WalletRepo;
 
@@ -33,24 +36,32 @@ public class WalletServiceImpl implements WalletService {
 	@Autowired
 	private TransactionRepo tRepo;
 
+	@Autowired
+	private SessionRepo session;
+
 	@Override
-	public Wallet showBalance(String mobileno) throws CustomerException {
+	public Wallet showBalance(String key) throws CustomerException, InvalidCredentialsException {
 
-		Optional<Customer> cst = cRepo.findById(mobileno);
+		CurrentUserSession currSession = session.findByKey(key);
 
-		if (cst.isPresent()) {
-			return cst.get().getWallet();
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+		Optional<Customer> customer = cRepo.findById(currSession.getMobile());
+		Optional<Wallet> wallet = wRepo.findById(customer.get().getWallet().getWalletId());
 
-		} else
-			throw new CustomerException("Customer not found");
+		return wallet.get();
 
 	}
 
 	@Override
-	public String fundTransfer(String sourceMobileNo, String targetMobileNo, double amount)
-			throws CustomerException, InsufficientFundException {
+	public String fundTransfer(String targetMobileNo, double amount, String key)
+			throws CustomerException, InsufficientFundException, InvalidCredentialsException {
 
-		Optional<Customer> customer1 = cRepo.findById(sourceMobileNo);
+		CurrentUserSession currSession = session.findByKey(key);
+
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+		Optional<Customer> customer1 = cRepo.findById(currSession.getMobile());
 
 		if (!customer1.isPresent()) {
 			throw new CustomerException("Sender account is not found");
@@ -64,7 +75,7 @@ public class WalletServiceImpl implements WalletService {
 
 		if (customer1.get().getWallet().getBalance() < amount)
 			throw new InsufficientFundException("Insufficient Funds in your Wallet.");
-		
+
 		Transaction tran = new Transaction();
 		tran.setAmount(amount);
 		tran.setDescription("Funds Transfered to " + customer2.get().getName());
@@ -95,39 +106,17 @@ public class WalletServiceImpl implements WalletService {
 	}
 
 	@Override
-	public Customer depositAmount(String mobileNo, double amount, BankAccount acc)
-			throws CustomerException, WalletException {
+	public Customer updateAccount(Customer customer, String key) throws CustomerException, InvalidCredentialsException {
 
-		Optional<Customer> customer = cRepo.findById(mobileNo);
+		CurrentUserSession currSession = session.findByKey(key);
 
-		if (customer.isEmpty()) {
-			throw new CustomerException("Customer not found");
-		}
-
-		Optional<BankAccount> account = bRepo.findById(acc.getAccountNo());
-		if (!account.isPresent() || account.get().getWallet().getWalletId() != customer.get().getWallet().getWalletId())
-			throw new WalletException("bankAccount Not Found.");
-
-		account.get().setBalance(account.get().getBalance() - amount);
-		bRepo.save(account.get());
-		double updatedBalance = customer.get().getWallet().getBalance() + amount;
-		customer.get().getWallet().setBalance(updatedBalance);
-
-		Customer customer1 = cRepo.save(customer.get());
-
-		return customer1;
-	}
-
-	@Override
-	public Customer updateAccount(Customer customer) throws CustomerException {
-
-		String mobileno = customer.getMobile();
-
-		Optional<Customer> customer1 = cRepo.findById(mobileno);
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+		Optional<Customer> customer1 = cRepo.findById(currSession.getMobile());
 
 		if (!customer1.isPresent())
 			throw new CustomerException("Customer Not Found.");
-		
+
 		if (customer.getName() != null)
 			customer1.get().setName(customer.getName());
 		if (customer.getPassword() != null)
@@ -138,11 +127,15 @@ public class WalletServiceImpl implements WalletService {
 	}
 
 	@Override
-	public Wallet addMoney(Integer walletId, double amount, BankAccount acc) throws WalletException {
+	public Wallet addMoney(String key, double amount, BankAccount acc)
+			throws WalletException, InvalidCredentialsException {
 
-		Integer id = walletId;
+		CurrentUserSession currSession = session.findByKey(key);
 
-		Optional<Wallet> wallet1 = wRepo.findById(id);
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+		Optional<Customer> customer = cRepo.findById(currSession.getMobile());
+		Optional<Wallet> wallet1 = wRepo.findById(customer.get().getWallet().getWalletId());
 
 		if (wallet1.isPresent()) {
 

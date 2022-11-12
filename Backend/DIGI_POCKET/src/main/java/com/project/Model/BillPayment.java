@@ -30,11 +30,11 @@ public class BillPayment {
 	@NotNull(message = "Amount cannot be null")
 	@Min(1)
 	private double amount;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	@NotNull
 	private Date paymentDate;
-	
+
 	// Entity Relationships;
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "walletId")
