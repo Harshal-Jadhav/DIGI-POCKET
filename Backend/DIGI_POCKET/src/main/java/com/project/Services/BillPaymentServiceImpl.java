@@ -10,44 +10,48 @@ import com.project.Exceptions.InsufficientFundException;
 import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.BillPayment;
+import com.project.Model.CurrentUserSession;
+import com.project.Model.Customer;
 import com.project.Model.Wallet;
 import com.project.Repositories.BillPaymentRepo;
+import com.project.Repositories.CustomerRepo;
+import com.project.Repositories.SessionRepo;
 import com.project.Repositories.WalletRepo;
 
 @Service
 public class BillPaymentServiceImpl implements BillPaymentService {
 
 	@Autowired
-	BillPaymentRepo billRepo;
+	private BillPaymentRepo billRepo;
 
 	@Autowired
-	WalletRepo walletRepo;
+	private WalletRepo walletRepo;
 
-	// TODO Delete this method after testing.
-	@Override
-	public Wallet addwallet(Wallet wallet) {
-		return walletRepo.save(wallet);
-	}
+	@Autowired
+	private CustomerRepo customerRepo;
+
+	@Autowired
+	private SessionRepo session;
 
 	@Override
-	public BillPayment addBillPayment(BillPayment bill, Integer wallet_Id)
+	public BillPayment addBillPayment(BillPayment bill, String key)
 			throws InvalidCredentialsException, InsufficientFundException {
-		Optional<Wallet> wallet = walletRepo.findById(wallet_Id);
+		CurrentUserSession currSession = session.findByKey(key);
 
-		// Authentication Here
-		if (!wallet.isPresent())
-			throw new InvalidCredentialsException("Invalid User.");
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+		Optional<Customer> customer = customerRepo.findById(currSession.getMobile());
+		Optional<Wallet> wallet = walletRepo.findById(customer.get().getWallet().getWalletId());
 
 		if (wallet.get().getBalance() < bill.getAmount())
 			throw new InsufficientFundException("Insufficient Funds in Wallet.");
-		
+
 		wallet.get().setBalance(wallet.get().getBalance() - bill.getAmount());
 
 		BillPayment savedbill = billRepo.save(bill);
+
 		savedbill.setWallet(wallet.get());
-
 		wallet.get().getBillPayments().add(bill);
-
 		walletRepo.save(wallet.get());
 
 		return savedbill;
@@ -55,13 +59,23 @@ public class BillPaymentServiceImpl implements BillPaymentService {
 	}
 
 	@Override
-	public List<BillPayment> viewAllBillPayments(Integer wallet_Id)
-			throws InvalidCredentialsException, WalletException {
-		Optional<Wallet> wallet = walletRepo.findById(wallet_Id);
+	public List<BillPayment> viewAllBillPayments(String key) throws InvalidCredentialsException, WalletException {
+		CurrentUserSession currSession = session.findByKey(key);
+
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+
+		Optional<Customer> customer = customerRepo.findById(currSession.getMobile());
+		Optional<Wallet> wallet = walletRepo.findById(customer.get().getWallet().getWalletId());
+
 		if (!wallet.isPresent())
 			throw new WalletException("Invalid User.");
 
 		List<BillPayment> billList = wallet.get().getBillPayments();
+
+		if (billList.size() == 0)
+			throw new WalletException("No Bill Found.");
+
 		return billList;
 	}
 

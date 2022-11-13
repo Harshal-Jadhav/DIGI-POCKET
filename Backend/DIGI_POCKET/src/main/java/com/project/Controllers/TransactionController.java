@@ -1,48 +1,50 @@
 package com.project.Controllers;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Exceptions.TransactionException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.Transaction;
+import com.project.Model.TransactionDTO;
 import com.project.Services.TransactionService;
 
 @RestController
-@RequestMapping("/digipocket/transactions")
+@RequestMapping("/digipocket/transactionservice")
 public class TransactionController {
 
 	@Autowired
 	private TransactionService tService;
 
-	@GetMapping("viewAll/{walletId}")
-	public ResponseEntity<List<Transaction>> getAllTransactions(@PathVariable("walletId") Integer wallet_Id)
-			throws WalletException {
-		List<Transaction> tranList = tService.viewAllTransaction(wallet_Id);
+	@GetMapping("/viewall")
+	public ResponseEntity<List<Transaction>> getAllTransactionsHandler(@RequestParam String key)
+			throws WalletException, InvalidCredentialsException {
+		List<Transaction> tranList = tService.viewAllTransaction(key);
 		return new ResponseEntity<List<Transaction>>(tranList, HttpStatus.OK);
 	}
 
-//	take input form the reqbody.
-	@GetMapping("viewAll/{from}/{to}/{walletId}")
-	public ResponseEntity<List<Transaction>> getAllTransactionsByDate(@PathVariable("from") LocalDate from,
-			@PathVariable("to") LocalDate to, @PathVariable("walletId") Integer wallet_Id) throws WalletException {
-		List<Transaction> tranList = tService.viewTransactionByDate(from, to, wallet_Id);
+	@PostMapping("/viewall")
+	public ResponseEntity<List<Transaction>> getAllTransactionsByDateHandler(@RequestParam String key,
+			@RequestBody TransactionDTO tran) throws WalletException, InvalidCredentialsException {
+		List<Transaction> tranList = tService.viewTransactionByDate(tran.getFrom(), tran.getTo(), key);
 		return new ResponseEntity<List<Transaction>>(tranList, HttpStatus.OK);
 	}
 
-	@GetMapping("view/{tranId}")
-	public ResponseEntity<Transaction> getTransaction(@PathVariable("tranId") Integer tran_Id)
-			throws TransactionException {
-		Transaction tran = tService.viewTransaction(tran_Id);
-		return new ResponseEntity<Transaction>(tran, HttpStatus.OK);
+	@GetMapping("/view")
+	public ResponseEntity<Transaction> getTransactionHandler(@RequestParam Integer tran, @RequestParam String key)
+			throws TransactionException, InvalidCredentialsException {
+		Transaction transaction = tService.viewTransaction(key, tran);
+		return new ResponseEntity<Transaction>(transaction, HttpStatus.OK);
 	}
 
 }

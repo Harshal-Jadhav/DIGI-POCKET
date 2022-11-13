@@ -7,13 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.Exceptions.BankAccountException;
+import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.BankAccount;
 import com.project.Model.Wallet;
@@ -21,7 +22,7 @@ import com.project.Repositories.WalletRepo;
 import com.project.Services.AccountService;
 
 @RestController
-@RequestMapping("/digipocket/bankaccount")
+@RequestMapping("/digipocket/bankservice")
 public class BankAccountController {
 
 	@Autowired
@@ -30,31 +31,24 @@ public class BankAccountController {
 	@Autowired
 	private WalletRepo wRepo;
 
-	@GetMapping("/{Id}")
-	public ResponseEntity<Wallet> getWallet(@PathVariable("Id") Integer Id) {
-		Wallet wallet = wRepo.getById(Id);
-		return new ResponseEntity<Wallet>(wallet, HttpStatus.OK);
-	}
-
-	@PostMapping("/add/{walletId}")
-	public ResponseEntity<Wallet> addNewBankAccount(@PathVariable("walletId") Integer wallet_Id,
-			@RequestBody BankAccount account) throws BankAccountException {
-		Wallet wallet = accService.addAccount(account, wallet_Id);
+	@PostMapping("/accounts")
+	public ResponseEntity<Wallet> addNewBankAccountHandler(@RequestParam String key, @RequestBody BankAccount account)
+			throws BankAccountException, InvalidCredentialsException {
+		Wallet wallet = accService.addAccount(account, key);
 		return new ResponseEntity<Wallet>(wallet, HttpStatus.CREATED);
 	}
-	
 
-	@DeleteMapping("/delete/{walletId}")
-	public ResponseEntity<Wallet> removeBankAccount(@PathVariable("walletId") Integer wallet_Id,
-			@RequestBody BankAccount account) throws BankAccountException, WalletException {
-		Wallet wallet = accService.removeAccount(account.getAccountNo(), wallet_Id);
+	@DeleteMapping("/accounts")
+	public ResponseEntity<Wallet> removeBankAccountHandler(@RequestParam String key, @RequestBody BankAccount account)
+			throws BankAccountException, WalletException, InvalidCredentialsException {
+		Wallet wallet = accService.removeAccount(account.getAccountNo(), key);
 		return new ResponseEntity<Wallet>(wallet, HttpStatus.OK);
 	}
-	
-	@GetMapping("/view/{walletId}")
-	public ResponseEntity<List<BankAccount>> getAllBankAccount(@PathVariable("walletId") Integer wallet_Id)
-			throws BankAccountException {
-		List<BankAccount> accList = accService.viewAccounts(wallet_Id);
+
+	@GetMapping("/accounts")
+	public ResponseEntity<List<BankAccount>> getAllBankAccountHandler(@RequestParam String key)
+			throws BankAccountException, InvalidCredentialsException {
+		List<BankAccount> accList = accService.viewAccounts(key);
 		return new ResponseEntity<List<BankAccount>>(accList, HttpStatus.OK);
 	}
 }

@@ -6,15 +6,12 @@ import com.project.Exceptions.InsufficientFundException;
 import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.BillPayment;
-import com.project.Model.Wallet;
 
 public interface BillPaymentService {
 
-	public Wallet addwallet(Wallet wallet);
-
-	public BillPayment addBillPayment(BillPayment bill, Integer wallet_Id)
+	public BillPayment addBillPayment(BillPayment bill, String key)
 			throws InvalidCredentialsException, InsufficientFundException;
-	
-	public List<BillPayment> viewAllBillPayments(Integer wallet_Id) throws InvalidCredentialsException, WalletException;
-	
+
+	public List<BillPayment> viewAllBillPayments(String key) throws InvalidCredentialsException, WalletException;
+
 }

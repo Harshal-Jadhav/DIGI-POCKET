@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.project.Exceptions.BeneficiaryNotFoundException;
 import com.project.Exceptions.CustomerException;
+import com.project.Exceptions.InvalidCredentialsException;
 import com.project.Exceptions.WalletException;
 import com.project.Model.Beneficiary;
+import com.project.Model.CurrentUserSession;
 import com.project.Model.Customer;
 import com.project.Model.Wallet;
 import com.project.Repositories.BeneficiaryRepo;
 import com.project.Repositories.CustomerRepo;
+import com.project.Repositories.SessionRepo;
 import com.project.Repositories.WalletRepo;
 
 @Service
@@ -28,10 +31,18 @@ public class BenificiaryServiceImpl implements BenificiaryService {
 	@Autowired
 	private CustomerRepo customerRepo;
 
+	@Autowired
+	private SessionRepo session;
+
 	@Override
-	public Beneficiary addBeneficiary(Beneficiary bd, Integer walletId) throws CustomerException, WalletException {
-		Optional<Customer> customer = customerRepo.findById(bd.getMobile());
-		Optional<Wallet> wallet = walletRepo.findById(walletId);
+	public Beneficiary addBeneficiary(Beneficiary bd, String key)
+			throws CustomerException, WalletException, InvalidCredentialsException {
+		CurrentUserSession currSession = session.findByKey(key);
+
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+		Optional<Customer> customer = customerRepo.findById(currSession.getMobile());
+		Optional<Wallet> wallet = walletRepo.findById(customer.get().getWallet().getWalletId());
 
 		if (!customer.isPresent())
 			throw new CustomerException("Beneficiary is not Registered to the Application.");
@@ -52,10 +63,15 @@ public class BenificiaryServiceImpl implements BenificiaryService {
 	}
 
 	@Override
-	public Beneficiary deleteBeneficiary(Beneficiary bd, Integer walletId)
-			throws BeneficiaryNotFoundException, WalletException {
+	public Beneficiary deleteBeneficiary(Beneficiary bd, String key)
+			throws BeneficiaryNotFoundException, WalletException, InvalidCredentialsException {
 		Optional<Beneficiary> ben = bRepo.findById(bd.getMobile());
-		Optional<Wallet> wallet = walletRepo.findById(walletId);
+		CurrentUserSession currSession = session.findByKey(key);
+
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+		Optional<Customer> customer = customerRepo.findById(currSession.getMobile());
+		Optional<Wallet> wallet = walletRepo.findById(customer.get().getWallet().getWalletId());
 
 		if (!ben.isPresent())
 			throw new BeneficiaryNotFoundException("Invalid Beneficiary Details.");
@@ -78,7 +94,7 @@ public class BenificiaryServiceImpl implements BenificiaryService {
 
 		List<Wallet> walletList = ben.get().getWalletList();
 
-		walletList.removeIf(w -> w.getWalletId().equals(walletId));
+		walletList.removeIf(w -> w.getWalletId().equals(wallet.get().getWalletId()));
 		benList.removeIf(b -> b.getMobile().equals(bd.getMobile()));
 
 		walletRepo.save(wallet.get());
@@ -86,31 +102,41 @@ public class BenificiaryServiceImpl implements BenificiaryService {
 	}
 
 	@Override
-	public Beneficiary viewBeneficiary(String mobile) throws BeneficiaryNotFoundException {
-		Optional<Beneficiary> opt = bRepo.findById(mobile);
-		if (opt.isPresent())
-			return opt.get();
-		else
-			throw new BeneficiaryNotFoundException("Beneficiary not found");
+	public Beneficiary viewBeneficiary(String mobile, String key)
+			throws BeneficiaryNotFoundException, InvalidCredentialsException {
+
+		CurrentUserSession currSession = session.findByKey(key);
+
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+		Optional<Customer> customer = customerRepo.findById(currSession.getMobile());
+		Optional<Wallet> wallet = walletRepo.findById(customer.get().getWallet().getWalletId());
+		List<Beneficiary> benList = wallet.get().getBeneficiaryList();
+
+		for (Beneficiary ben : benList) {
+			if (ben.getMobile().equals(mobile)) {
+				return ben;
+			}
+		}
+
+		throw new BeneficiaryNotFoundException("Beneficiary not found");
 	}
 
 	@Override
-	public List<Beneficiary> viewAllBeneficiary(Customer customer)
-			throws BeneficiaryNotFoundException, CustomerException {
-		Optional<Customer> opt = customerRepo.findById(customer.getMobile());
-		List<Beneficiary> blist = null;
-		if (opt.isPresent()) {
-			Customer c = opt.get();
-			Wallet w = c.getWallet();
-			blist = w.getBeneficiaryList();
-		} else {
-			throw new CustomerException("Customer not found");
-		}
+	public List<Beneficiary> viewAllBeneficiary(String key)
+			throws BeneficiaryNotFoundException, InvalidCredentialsException {
+		CurrentUserSession currSession = session.findByKey(key);
+
+		if (currSession == null)
+			throw new InvalidCredentialsException("Invalid Session key.");
+		Optional<Customer> customer = customerRepo.findById(currSession.getMobile());
+		Optional<Wallet> wallet = walletRepo.findById(customer.get().getWallet().getWalletId());
+		List<Beneficiary> blist = wallet.get().getBeneficiaryList();
 
 		if (blist.size() != 0)
 			return blist;
 		else
-			throw new BeneficiaryNotFoundException("for this customer beneficiary not found");
+			throw new BeneficiaryNotFoundException("No Beneficiaries Found.");
 	}
 
 }
