@@ -15,7 +15,7 @@
 
 <h2>👉<i>Features this API has</i></h2>
 
-❖ User Registration, Login & Logout Using Session key.
+❖ User Registration and Login Using Session key.
 
 ❖ Link & Unlink Bank Account to the Wallet.
 
