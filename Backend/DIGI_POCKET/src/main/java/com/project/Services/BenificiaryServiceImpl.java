@@ -83,7 +83,7 @@ public class BenificiaryServiceImpl implements BenificiaryService {
 		List<Beneficiary> benList = wallet.get().getBeneficiaryList();
 
 		for (Beneficiary b : benList) {
-			if (b.getMobile().equals(b.getMobile())) {
+			if (b.getMobile().equals(ben.get().getMobile())) {
 				flag = true;
 				break;
 			}
