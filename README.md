@@ -8,7 +8,7 @@
 <h2>👉<i>Let's meet the team</i></h2>
 
 - #### Harshal Jadhav - TeamLead         ([GitHub](https://github.com/Harshal-Jadhav))
-- #### Mohit Birla ([GitHub]())
+- #### Mohit Birla ([GitHub](https://github.com/mohitbirla20))
 - #### Suresh Malik ([GitHub]())
 - #### Munna Gupta ([GitHub]())
 - #### Indrajit Paul ([GitHub]())
