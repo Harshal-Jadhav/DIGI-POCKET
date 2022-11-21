@@ -9,7 +9,7 @@
 
 - #### Harshal Jadhav - TeamLead         ([GitHub](https://github.com/Harshal-Jadhav))
 - #### Mohit Birla ([GitHub]())
-- #### Suresh Malik ([GitHub]())
+- #### Suresh Kumar Mallik ([GitHub]())
 - #### Munna Gupta ([GitHub]())
 - #### Indrajit Paul ([GitHub]())
 
