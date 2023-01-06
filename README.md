@@ -43,5 +43,6 @@
 <h1></h1>
 <h1>🔖 Entity Relationship Diagram</h1>
 
-![ERD](/Backend/ERD.png)
+<!-- ![ERD](/Backend/ERD.png)-->
+[![ERD.png](https://i.postimg.cc/qMmtfv8P/ERD.png)](https://postimg.cc/HVyWXHvz)
 
