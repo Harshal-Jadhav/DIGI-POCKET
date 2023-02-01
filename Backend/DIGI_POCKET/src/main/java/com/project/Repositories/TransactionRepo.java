@@ -8,4 +8,5 @@ import com.project.Model.Transaction;
 @Repository
 public interface TransactionRepo extends JpaRepository<Transaction, Integer> {
 
+
 }
