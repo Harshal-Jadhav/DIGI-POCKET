@@ -38,7 +38,7 @@
 
 </div>
 
-### API UI:- Swagger-ui (https://shorturl.at/dyYZ0)
+
 
 <h1></h1>
 <h1>🔖 Entity Relationship Diagram</h1>
